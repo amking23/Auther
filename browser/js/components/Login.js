@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 class Login extends React.Component {
   constructor(props) {
     super(props);
-    this.onLoginSubmit = this.onLoginSubmit.bind(this);
+    //this.onLoginSubmit = this.onLoginSubmit.bind(this);
   }
 
   render() {
@@ -56,16 +56,22 @@ class Login extends React.Component {
     );
   }
 
-  onLoginSubmit(event) {
-    const { message } = this.props;
-    event.preventDefault();
-    console.log(`${message} isn't implemented yet`);
-  }
+
 }
 
 /* -----------------    CONTAINER     ------------------ */
 
 const mapState = () => ({ message: 'Log in' });
-const mapDispatch = null;
+function mapDispatchToProps(dispatch, ownProps){
+  return {
+    onLoginSubmit: function(event) {
+      //const { message } = this.props;
+      console.log('inside login submit')
+      event.preventDefault();
+      dispatch(setCurrentUserThunk({email: event.target.email.value, password: event.target.password.value}, ownProps))
+    }
+    
+  }
+}
 
-export default connect(mapState, mapDispatch)(Login);
+export default connect(mapState, mapDispatchToProps)(Login);

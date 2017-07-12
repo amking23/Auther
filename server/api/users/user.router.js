@@ -57,4 +57,20 @@ router.delete('/:id', function (req, res, next) {
   .catch(next);
 });
 
+router.post('/login', function(req, res, next){
+  User.findOne({
+    where: req.body
+  })
+  .then(function(user){
+    if(!user){
+      res.sendStatus(401)
+    } else {
+      console.log(req)
+      req.session.userId = user.id
+      res.sendStatus(200)
+    }
+  })
+  .catch(next)
+})
+
 module.exports = router;
