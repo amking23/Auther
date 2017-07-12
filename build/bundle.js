@@ -25950,10 +25950,12 @@
 	
 	var setCurrentUserThunk = exports.setCurrentUserThunk = function setCurrentUserThunk(user) {
 	  return function (dispatch) {
-	    _axios2.default.post('/api/users/login', user).then(function (res) {
-	      return dispatch(create(res.data));
+	    console.log('user in thunk: ', user);
+	    _axios2.default.post('api/users/login', user).then(function (res) {
+	      console.log(res);
+	      dispatch(setCurrentUser(res.data));
 	    }).catch(function (err) {
-	      return console.error('Login for user: ' + req.body + ' unsuccesful', err);
+	      return console.error('Login for user unsuccesful', err);
 	    });
 	  };
 	};
@@ -29792,6 +29794,8 @@
 	
 	var _reactRedux = __webpack_require__(184);
 	
+	var _currentUser = __webpack_require__(248);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -29808,8 +29812,10 @@
 	  function Login(props) {
 	    _classCallCheck(this, Login);
 	
-	    return _possibleConstructorReturn(this, (Login.__proto__ || Object.getPrototypeOf(Login)).call(this, props));
-	    //this.onLoginSubmit = this.onLoginSubmit.bind(this);
+	    var _this = _possibleConstructorReturn(this, (Login.__proto__ || Object.getPrototypeOf(Login)).call(this, props));
+	
+	    _this.onLoginSubmit = _this.onLoginSubmit.bind(_this);
+	    return _this;
 	  }
 	
 	  _createClass(Login, [{
@@ -29900,6 +29906,13 @@
 	        )
 	      );
 	    }
+	  }, {
+	    key: 'onLoginSubmit',
+	    value: function onLoginSubmit(event) {
+	      //const { message } = this.props;
+	      event.preventDefault();
+	      this.props.dispatchCurrentUser({ email: event.target.email.value, password: event.target.password.value });
+	    }
 	  }]);
 	
 	  return Login;
@@ -29910,15 +29923,13 @@
 	var mapState = function mapState() {
 	  return { message: 'Log in' };
 	};
+	
 	function mapDispatchToProps(dispatch, ownProps) {
 	  return {
-	    onLoginSubmit: function onLoginSubmit(event) {
-	      //const { message } = this.props;
-	      console.log('inside login submit');
-	      event.preventDefault();
-	      dispatch(setCurrentUserThunk({ email: event.target.email.value, password: event.target.password.value }, ownProps));
+	    dispatchCurrentUser: function dispatchCurrentUser(user) {
+	      console.log('user in dispatch: ', user);
+	      dispatch((0, _currentUser.setCurrentUserThunk)(user));
 	    }
-	
 	  };
 	}
 	

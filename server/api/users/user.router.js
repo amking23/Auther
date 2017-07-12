@@ -58,8 +58,11 @@ router.delete('/:id', function (req, res, next) {
 });
 
 router.post('/login', function(req, res, next){
+  console.log('req body in POST', req.body)
   User.findOne({
-    where: req.body
+    where: {
+      email : req.body.email
+    }
   })
   .then(function(user){
     if(!user){

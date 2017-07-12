@@ -28,8 +28,13 @@ export default function reducer (currentUser = {}, action) {
 
 
 export const setCurrentUserThunk = user => dispatch => {
-  axios.post('/api/users/login', user)
-       .then(res => dispatch(create(res.data)))
-       .catch(err => console.error(`Login for user: ${req.body} unsuccesful`, err));
+  console.log('user in thunk: ', user)
+  axios.post('api/users/login', user)
+       .then(res => {
+          console.log(res)
+          dispatch(setCurrentUser(res.data))
+          }
+        )
+       .catch(err => console.error(`Login for user unsuccesful`, err));
 };
 

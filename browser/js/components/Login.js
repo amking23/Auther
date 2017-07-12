@@ -1,12 +1,13 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { setCurrentUserThunk } from '../redux/currentUser'
 
 /* -----------------    COMPONENT     ------------------ */
 
 class Login extends React.Component {
   constructor(props) {
     super(props);
-    //this.onLoginSubmit = this.onLoginSubmit.bind(this);
+    this.onLoginSubmit = this.onLoginSubmit.bind(this);
   }
 
   render() {
@@ -56,21 +57,25 @@ class Login extends React.Component {
     );
   }
 
+  onLoginSubmit(event){
+    //const { message } = this.props;
+    event.preventDefault();
+    this.props.dispatchCurrentUser({email: event.target.email.value, password: event.target.password.value})
+  }
+
 
 }
 
 /* -----------------    CONTAINER     ------------------ */
 
 const mapState = () => ({ message: 'Log in' });
+
 function mapDispatchToProps(dispatch, ownProps){
   return {
-    onLoginSubmit: function(event) {
-      //const { message } = this.props;
-      console.log('inside login submit')
-      event.preventDefault();
-      dispatch(setCurrentUserThunk({email: event.target.email.value, password: event.target.password.value}, ownProps))
+    dispatchCurrentUser: function(user){
+      console.log('user in dispatch: ', user)
+      dispatch(setCurrentUserThunk(user))
     }
-    
   }
 }
 
