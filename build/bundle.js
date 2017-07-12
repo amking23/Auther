@@ -25927,7 +25927,7 @@
 	/* ------------   ACTION CREATORS     ------------------ */
 	
 	var setCurrentUser = function setCurrentUser(currentUser) {
-	  return { type: SET_CURRENT_USER, user: user };
+	  return { type: SET_CURRENT_USER, currentUser: currentUser };
 	};
 	
 	/* ------------       REDUCER     ------------------ */
@@ -25939,7 +25939,7 @@
 	  switch (action.type) {
 	
 	    case SET_CURRENT_USER:
-	      return action.user;
+	      return action.currentUser;
 	
 	    default:
 	      return currentUser;
@@ -25950,9 +25950,9 @@
 	
 	var setCurrentUserThunk = exports.setCurrentUserThunk = function setCurrentUserThunk(user) {
 	  return function (dispatch) {
-	    console.log('user in thunk: ', user);
+	
 	    _axios2.default.post('api/users/login', user).then(function (res) {
-	      console.log(res);
+	      console.log(res.data);
 	      dispatch(setCurrentUser(res.data));
 	    }).catch(function (err) {
 	      return console.error('Login for user unsuccesful', err);
@@ -29909,7 +29909,6 @@
 	  }, {
 	    key: 'onLoginSubmit',
 	    value: function onLoginSubmit(event) {
-	      //const { message } = this.props;
 	      event.preventDefault();
 	      this.props.dispatchCurrentUser({ email: event.target.email.value, password: event.target.password.value });
 	    }
@@ -29927,11 +29926,14 @@
 	function mapDispatchToProps(dispatch, ownProps) {
 	  return {
 	    dispatchCurrentUser: function dispatchCurrentUser(user) {
-	      console.log('user in dispatch: ', user);
 	      dispatch((0, _currentUser.setCurrentUserThunk)(user));
+	      (0, _currentUser.setCurrentUserThunk)(user)();
 	    }
+	    // dispatch2: ()=>{}
 	  };
 	}
+	
+	// mapDispatchToProps = { setCurrentUserThunk }
 	
 	exports.default = (0, _reactRedux.connect)(mapState, mapDispatchToProps)(Login);
 

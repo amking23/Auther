@@ -58,12 +58,9 @@ class Login extends React.Component {
   }
 
   onLoginSubmit(event){
-    //const { message } = this.props;
     event.preventDefault();
     this.props.dispatchCurrentUser({email: event.target.email.value, password: event.target.password.value})
   }
-
-
 }
 
 /* -----------------    CONTAINER     ------------------ */
@@ -73,10 +70,13 @@ const mapState = () => ({ message: 'Log in' });
 function mapDispatchToProps(dispatch, ownProps){
   return {
     dispatchCurrentUser: function(user){
-      console.log('user in dispatch: ', user)
       dispatch(setCurrentUserThunk(user))
+      setCurrentUserThunk(user)()
     }
+    // dispatch2: ()=>{}
   }
 }
+
+// mapDispatchToProps = { setCurrentUserThunk }
 
 export default connect(mapState, mapDispatchToProps)(Login);

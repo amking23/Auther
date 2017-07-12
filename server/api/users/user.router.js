@@ -58,19 +58,18 @@ router.delete('/:id', function (req, res, next) {
 });
 
 router.post('/login', function(req, res, next){
-  console.log('req body in POST', req.body)
   User.findOne({
     where: {
-      email : req.body.email
+      email : req.body.email,
+      password : req.body.password
     }
   })
   .then(function(user){
     if(!user){
       res.sendStatus(401)
     } else {
-      console.log(req)
-      req.session.userId = user.id
-      res.sendStatus(200)
+      //req.session.userId = user.id
+      res.status(200).json(user)
     }
   })
   .catch(next)
