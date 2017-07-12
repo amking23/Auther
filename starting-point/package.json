@@ -1,0 +1,50 @@
+{
+  "name": "auther",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server/index.js",
+  "scripts": {
+    "start": "webpack -w & nodemon --watch server -e js,html server/index.js",
+    "seed": "node seed",
+    "db-init": "pg-init auther",
+    "postinstall": "npm run db-init"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.15.0",
+    "babel": "^5.8.38",
+    "babel-core": "^6.14.0",
+    "babel-loader": "^6.2.5",
+    "babel-preset-es2015": "^6.14.0",
+    "babel-preset-react": "^6.11.1",
+    "bluebird": "^2.10.2",
+    "bootstrap": "^3.3.7",
+    "bootstrap-social": "^5.0.0",
+    "express": "^4.13.3",
+    "font-awesome": "^4.6.3",
+    "fs-misc": "^2.0.0",
+    "history": "^4.6.3",
+    "jquery": "^3.1.0",
+    "lodash": "^4.16.4",
+    "pg": "^4.5.5",
+    "react": "^15.3.2",
+    "react-contenteditable": "^2.0.1",
+    "react-dom": "^15.3.2",
+    "react-redux": "^4.4.5",
+    "react-router": "^4.1.1",
+    "react-router-dom": "^4.1.1",
+    "redux": "^3.6.0",
+    "redux-devtools-extension": "^1.0.0",
+    "redux-logger": "^3.0.1",
+    "redux-thunk": "^2.1.0",
+    "sequelize": "^3.23.1",
+    "volleyball": "^1.3.0",
+    "webpack": "^1.13.2"
+  },
+  "devDependencies": {
+    "cartoon-avatar": "^1.0.2",
+    "chance": "^0.8.0",
+    "nodemon": "^1.7.1"
+  }
+}
