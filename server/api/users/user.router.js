@@ -68,11 +68,33 @@ router.post('/login', function(req, res, next){
     if(!user){
       res.sendStatus(401)
     } else {
-      //req.session.userId = user.id
+      req.session.userId = user.id
       res.status(200).json(user)
     }
   })
   .catch(next)
+})
+
+// for signup (redux store already had /sers defined)
+router.post('/users', function(req, res, next){
+  User.create({
+      email : req.body.email,
+      password : req.body.password
+  })
+  .then(function(user){
+    if(!user){
+      res.sendStatus(401)
+    } else {
+      res.status(200).json(user)
+    }
+  })
+  .catch(next)
+})
+
+// to delete a session
+router.put('/logout', function(req,res,next){
+  req.session.destroy()
+  res.sendStatus(200);
 })
 
 module.exports = router;

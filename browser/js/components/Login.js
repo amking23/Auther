@@ -71,7 +71,6 @@ function mapDispatchToProps(dispatch, ownProps){
   return {
     dispatchCurrentUser: function(user){
       dispatch(setCurrentUserThunk(user))
-      setCurrentUserThunk(user)()
     }
     // dispatch2: ()=>{}
   }

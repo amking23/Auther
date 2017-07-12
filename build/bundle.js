@@ -25911,7 +25911,7 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports.setCurrentUserThunk = undefined;
+	exports.setCurrentUserThunk = exports.logoutCurrentUserThunk = undefined;
 	exports.default = reducer;
 	
 	var _axios = __webpack_require__(222);
@@ -25923,11 +25923,15 @@
 	/* -----------------    ACTIONS     ------------------ */
 	
 	var SET_CURRENT_USER = 'SET_CURRENT_USER';
+	var LOGOUT_CURRENT_USER = 'LOGOUT_CURRENT_USER';
 	
 	/* ------------   ACTION CREATORS     ------------------ */
 	
 	var setCurrentUser = function setCurrentUser(currentUser) {
 	  return { type: SET_CURRENT_USER, currentUser: currentUser };
+	};
+	var logoutCurrentUser = function logoutCurrentUser() {
+	  type: LOGOUT_CURRENT_USER, {};
 	};
 	
 	/* ------------       REDUCER     ------------------ */
@@ -25941,12 +25945,26 @@
 	    case SET_CURRENT_USER:
 	      return action.currentUser;
 	
+	    case LOGOUT_CURRENT_USER:
+	      return action.currentUser;
+	
 	    default:
 	      return currentUser;
 	  }
 	}
 	
 	/* ------------   THUNK CREATORS     ------------------ */
+	
+	var logoutCurrentUserThunk = exports.logoutCurrentUserThunk = function logoutCurrentUserThunk() {
+	  return function (dispatch) {
+	
+	    _axios2.default.put('api/users/logout').then(function (res) {
+	      dispatch(logoutCurrentUser());
+	    }).catch(function (err) {
+	      return console.log('Log out unsuccesful', err);
+	    });
+	  };
+	};
 	
 	var setCurrentUserThunk = exports.setCurrentUserThunk = function setCurrentUserThunk(user) {
 	  return function (dispatch) {
@@ -29453,6 +29471,8 @@
 	
 	var _history2 = _interopRequireDefault(_history);
 	
+	var _currentUser = __webpack_require__(248);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -29576,7 +29596,7 @@
 	            {
 	              className: 'navbar-btn btn btn-default',
 	              onClick: this.props.logout },
-	            'logout'
+	            'Logout'
 	          )
 	        )
 	      );
@@ -29593,7 +29613,7 @@
 	var mapDispatch = function mapDispatch(dispatch) {
 	  return {
 	    logout: function logout() {
-	      console.log('You signed out. Sorta.');
+	      dispatch((0, _currentUser.logoutCurrentUserThunk)());
 	      _history2.default.push('/');
 	    }
 	  };
@@ -29927,7 +29947,6 @@
 	  return {
 	    dispatchCurrentUser: function dispatchCurrentUser(user) {
 	      dispatch((0, _currentUser.setCurrentUserThunk)(user));
-	      (0, _currentUser.setCurrentUserThunk)(user)();
 	    }
 	    // dispatch2: ()=>{}
 	  };
@@ -29954,6 +29973,8 @@
 	var _react2 = _interopRequireDefault(_react);
 	
 	var _reactRedux = __webpack_require__(184);
+	
+	var _users = __webpack_require__(221);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -30068,10 +30089,8 @@
 	  }, {
 	    key: 'onSignupSubmit',
 	    value: function onSignupSubmit(event) {
-	      var message = this.props.message;
-	
 	      event.preventDefault();
-	      console.log(message + ' isn\'t implemented yet');
+	      this.props.dispatchNewUser({ email: event.target.email.value, password: event.target.password.value });
 	    }
 	  }]);
 	
@@ -30083,9 +30102,17 @@
 	var mapState = function mapState() {
 	  return { message: 'Sign up' };
 	};
-	var mapDispatch = null;
 	
-	exports.default = (0, _reactRedux.connect)(mapState, mapDispatch)(Signup);
+	function mapDispatchToProps(dispatch, ownProps) {
+	  return {
+	    dispatchNewUser: function dispatchNewUser(user) {
+	      dispatch((0, _users.addUser)(user));
+	    }
+	  };
+	}
+	// const mapDispatch = null;
+	
+	exports.default = (0, _reactRedux.connect)(mapState, mapDispatchToProps)(Signup);
 
 /***/ }),
 /* 293 */
